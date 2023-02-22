@@ -6,15 +6,19 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "npx cross-env NODE_OPTIONS=--openssl-legacy-provider expo start --web"
   },
   "dependencies": {
+    "@expo/webpack-config": "^0.17.2",
     "expo": "~47.0.12",
     "expo-status-bar": "~1.4.2",
+    "intl": "^1.2.5",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
-    "react-native-web": "~0.18.9"
+    "react-native-reanimated": "2.12.0",
+    "react-native-web": "~0.18.9",
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
