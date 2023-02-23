@@ -1,98 +1,45 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import React from 'react';
+import { View, TextInput, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-const SearchBar = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [animation] = useState(new Animated.Value(0));
-
-  const toggleSearchBar = () => {
-    setIsSearchOpen(!isSearchOpen);
-
-    Animated.timing(animation, {
-      toValue: isSearchOpen ? 0 : 1,
-      duration: 200,
-      useNativeDriver: false
-    }).start();
-  };
-
-  const closeSearchBar = () => {
-    setIsSearchOpen(false);
-
-    Animated.timing(animation, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: false
-    }).start();
-  };
-
-  const animatedStyle = {
-    width: animation.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['30%', '80%']
-    })
-  };
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.searchContainer}>
-        <Feather name="search" size={20} style={styles.searchIcon} />
-        <Animated.View style={[styles.searchInput, animatedStyle]}>
-          <TextInput
-            placeholder="Search"
-            value={searchTerm}
-            onChangeText={setSearchTerm}
-            style={styles.searchTextInput}
-          />
-          <TouchableOpacity onPress={closeSearchBar} style={styles.closeButton}>
-            <Feather name="x" size={20} style={styles.closeIcon} />
-          </TouchableOpacity>
-        </Animated.View>
-      </View>
-      <TouchableOpacity onPress={toggleSearchBar} style={styles.searchButton}>
-        <Feather name="search" size={20} style={styles.searchIcon} />
-      </TouchableOpacity>
-    </View>
-  );
-};
+interface Props {
+  value: string;
+  setSearchKey: React.Dispatch<React.SetStateAction<string>>;
+}
 
 const styles = StyleSheet.create({
-  container: {
+  searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    backgroundColor: '#f3f4f6',
+    borderRadius: 5,
+    marginHorizontal: 5,
     marginVertical: 10,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  searchIcon: {
-    color: 'grey',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
   searchInput: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 20,
-    overflow: 'hidden',
-    backgroundColor: 'white'
-  },
-  searchTextInput: {
     flex: 1,
-    padding: 10
+    fontSize: 16,
+    color: 'black',
+    marginLeft: 5,
   },
-  closeButton: {
-    padding: 10
+  searchIcon: {
+    marginRight: 5,
   },
-  closeIcon: {
-    color: 'grey'
-  },
-  searchButton: {
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 20,
-  }
 });
+
+const SearchBar = ({ value, setSearchKey }: Props) => (
+  <View style={styles.searchBar}>
+    <Ionicons name="search" size={24} color="#9ca3af" style={styles.searchIcon} />
+    <TextInput
+      style={styles.searchInput}
+      placeholder="Search asset"
+      placeholderTextColor="gray"
+      onChangeText={(e) => setSearchKey(e)}
+      value={value}
+    />
+  </View>
+);
 
 export default SearchBar;

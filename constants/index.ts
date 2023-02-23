@@ -4,21 +4,23 @@ export const API = {
 };
 
 export const TAGS = [
-  { tag: '', name: 'Terbaru' },
-  { tag: 'defi', name: 'DeFi' },
-  { tag: 'NFT', name: 'NFT' },
-  { tag: 'Gaming', name: 'Gaming' },
-  { tag: 'innovation-zone', name: 'Innovation' },
-  { tag: 'fan_token', name: 'Fan Token' },
-  { tag: 'storage-zone', name: 'Storage' },
-  { tag: 'Polkadot', name: 'Polkadot' },
-  { tag: 'pos', name: 'POS' },
-  { tag: 'pow', name: 'POW' },
-  { tag: 'Launchpad', name: 'Launchpad' },
-  { tag: 'Launchpool', name: 'Launchpool' },
-  { tag: 'BSC', name: 'BSC' },
-  { tag: 'ETF', name: 'ETF' },
+  { tag: '', name: 'Top 100', icon: 'star' },
+  { tag: 'defi', name: 'DeFi', icon: 'bank' },
+  { tag: 'NFT', name: 'NFT', icon: 'deviantart' },
+  { tag: 'Gaming', name: 'Gaming', icon: 'gamepad' },
+  { tag: 'innovation-zone', name: 'Innovation', icon: 'lightbulb-o' },
+  { tag: 'fan_token', name: 'Fan Token', icon: 'users' },
+  { tag: 'storage-zone', name: 'Storage', icon: 'inbox' },
+  { tag: 'pos', name: 'POS', icon: 'globe' },
+  { tag: 'pow', name: 'POW', icon: 'certificate' },
+];
+
+export const SORT_OPTION = [
+  { key: 'default', label: 'Default' },
+  { key: 'gainer', label: 'Gainers' },
+  { key: 'price', label: 'Price' },
+  { key: 'volume', label: 'Volume' },
 ];
 
 export const USD_TO_IDR_DEFAULT = 15197.10; // Based on USD in 22/02/2023 19:00
-export const REFETCH_INTERVAL = 3000;
+export const REFETCH_INTERVAL = 4000;

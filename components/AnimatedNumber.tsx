@@ -1,26 +1,28 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Animated } from 'react-native';
-import { USD_TO_IDR_DEFAULT } from '../constants';
+import { StyleSheet, View, Animated } from 'react-native';
+import { formatCurrency, usdToIdr } from '../utilities';
 
 interface Props {
   value: number
 }
 
+const styles = StyleSheet.create({
+  animatedText: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    textAlign: 'right',
+  },
+});
+
 const AnimatedNumber = ({ value }: Props) => {
-  const [currentColor, setCurrentColor] = useState(new Animated.Value(0));
+  const [currentColor] = useState(new Animated.Value(0));
   const prevValue = useRef(value);
 
-  const currencyFormatter = new Intl.NumberFormat('id-ID', {
-    style: 'decimal',
-    maximumFractionDigits: 0,
-  });
-
-  const rupiahPrice = (Number(value) * Number(USD_TO_IDR_DEFAULT));
-  const formattedPrice = currencyFormatter.format(rupiahPrice);
+  const formattedPrice = formatCurrency(usdToIdr(Number(value)), 0);
 
   const color = currentColor.interpolate({
     inputRange: [-1, 0, 1],
-    outputRange: ['#FF0000', '#000000', '#00FF00'],
+    outputRange: ['#dc2626', '#000000', '#16a34a'], // red - black - green
   });
 
   useEffect(() => {
@@ -28,12 +30,12 @@ const AnimatedNumber = ({ value }: Props) => {
       Animated.sequence([
         Animated.timing(currentColor, {
           toValue: -1,
-          duration: 500,
+          duration: 100,
           useNativeDriver: false,
         }),
         Animated.timing(currentColor, {
           toValue: 0,
-          duration: 500,
+          duration: 1500,
           useNativeDriver: false,
         }),
       ]).start();
@@ -41,12 +43,12 @@ const AnimatedNumber = ({ value }: Props) => {
       Animated.sequence([
         Animated.timing(currentColor, {
           toValue: 1,
-          duration: 500,
+          duration: 100,
           useNativeDriver: false,
         }),
         Animated.timing(currentColor, {
           toValue: 0,
-          duration: 500,
+          duration: 1500,
           useNativeDriver: false,
         }),
       ]).start();
@@ -56,7 +58,9 @@ const AnimatedNumber = ({ value }: Props) => {
 
   return (
     <View>
-      <Animated.Text style={{ fontWeight: "bold", fontSize: 15, textAlign: "right", color }}>Rp {formattedPrice}</Animated.Text>
+      <Animated.Text style={[styles.animatedText, { color }]}>
+        {`Rp ${formattedPrice}`}
+      </Animated.Text>
     </View>
   );
 };
