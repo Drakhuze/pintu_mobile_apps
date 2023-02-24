@@ -224,8 +224,8 @@ const Home = () => {
       {renderHeader()}
       {renderBadges()}
       {renderSort()}
-      {renderStatus()}
       {renderTokens()}
+      {renderStatus()}
     </SafeAreaView>
   );
 };
