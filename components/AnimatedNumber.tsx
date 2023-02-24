@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
 import { formatCurrency, usdToIdr } from '../utilities';
 
@@ -25,7 +25,7 @@ const AnimatedNumber = ({ value }: Props) => {
     outputRange: ['#dc2626', '#000000', '#16a34a'], // red - black - green
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (value < prevValue.current) {
       Animated.sequence([
         Animated.timing(currentColor, {

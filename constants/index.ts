@@ -4,7 +4,7 @@ export const API = {
 };
 
 export const TAGS = [
-  { tag: '', name: 'Top 100', icon: 'star' },
+  { tag: '', name: 'All', icon: 'star' },
   { tag: 'defi', name: 'DeFi', icon: 'bank' },
   { tag: 'NFT', name: 'NFT', icon: 'deviantart' },
   { tag: 'Gaming', name: 'Gaming', icon: 'gamepad' },
@@ -23,4 +23,4 @@ export const SORT_OPTION = [
 ];
 
 export const USD_TO_IDR_DEFAULT = 15197.10; // Based on USD in 22/02/2023 19:00
-export const REFETCH_INTERVAL = 4000;
+export const REFETCH_INTERVAL = 5000;

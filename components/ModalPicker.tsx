@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import { Feather } from '@expo/vector-icons';
@@ -65,4 +65,4 @@ const ModalPicker = ({
   );
 };
 
-export default ModalPicker;
+export default memo(ModalPicker);

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import {
   StyleSheet, View, Image, Text,
 } from 'react-native';
@@ -34,11 +34,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'right',
   },
+  priceSkeleton: {
+    backgroundColor: 'lightgray',
+    width: 100,
+    height: 18,
+    marginBottom: 3,
+  },
+  percentSkeleton: {
+    backgroundColor: 'lightgray',
+    width: 70,
+    height: 18,
+  },
 });
 
-const Token = memo(({ data }: Props) => {
+const Token = ({ data }: Props) => {
   const priceChangeStatus = Number(data.priceChangePercent) === 0 ? 'zero' : Number(data.priceChangePercent) > 0 ? 'up' : 'down';
-  const percentColor = Number(data.priceChangePercent) === 0 ? 'white' : Number(data.priceChangePercent) > 0 ? '#16a34a' : '#dc2626';
+  const percentColor = Number(data.priceChangePercent) === 0 ? 'black' : Number(data.priceChangePercent) > 0 ? '#16a34a' : '#dc2626';
   const formattedPercent = formatPercentage(Number(data.priceChangePercent), 2);
 
   return (
@@ -54,19 +65,29 @@ const Token = memo(({ data }: Props) => {
         <Text style={{ color: '#a3a3a3', fontSize: 16 }}>{data.name}</Text>
       </View>
       <View style={[globalStyles.marginLeftAuto, globalStyles.flexDirectionColumn]}>
-        <AnimatedNumber value={data.price} />
+        {data.price !== undefined
+          ? <AnimatedNumber value={data.price} />
+          : <View style={styles.priceSkeleton} />}
+
         <View style={[globalStyles.marginLeftAuto, globalStyles.flexDirectionRow]}>
-          {priceChangeStatus === 'up'
-            ? <Ionicons name="caret-up" size={20} color={percentColor} />
-            : priceChangeStatus === 'down'
-            && <Ionicons name="caret-down" size={20} color={percentColor} />}
-          <Text style={[styles.priceText, { color: percentColor }]}>
-            {`${formattedPercent} %`}
-          </Text>
+          {data.priceChangePercent !== undefined
+            ? (
+              <>
+                {priceChangeStatus === 'up'
+                  ? <Ionicons name="caret-up" size={20} color={percentColor} />
+                  : priceChangeStatus === 'down'
+                  && <Ionicons name="caret-down" size={20} color={percentColor} />}
+
+                <Text style={[styles.priceText, { color: percentColor }]}>
+                  {`${formattedPercent} %`}
+                </Text>
+              </>
+            )
+            : <View style={styles.percentSkeleton} />}
         </View>
       </View>
     </View>
   );
-});
+};
 
 export default Token;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   Text, StyleSheet, Pressable,
 } from 'react-native';
@@ -40,4 +40,4 @@ const Badge = ({
   </Pressable>
 );
 
-export default Badge;
+export default memo(Badge);

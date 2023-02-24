@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-  FlatList,
   Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import ModalPicker from '../components/ModalPicker';
 import Badge from '../components/Badge';
 import SearchBar from '../components/SearchBar';
-import TokenList from '../components/TokenList';
 import { SORT_OPTION, TAGS } from '../constants';
 import {
   ISymbol, ITag, ITicker, IToken,
@@ -30,7 +29,6 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     paddingBottom: 10,
     minHeight: 50,
-    maxHeight: 50,
     borderStyle: 'solid',
   },
   sortContainer: {
@@ -39,6 +37,12 @@ const styles = StyleSheet.create({
   },
   coinContainer: {
     flex: 1,
+  },
+  loadingContainer: {
+    padding: 15,
+  },
+  loadingText: {
+    textAlign: 'center',
   },
 });
 
@@ -50,7 +54,7 @@ const Home = () => {
   const [prevTicker, setPrevTicker] = useState<ITicker[]>();
 
   const symbolList = useSymbolList();
-  const tickerList = useTickerList();
+  const tickerList = useTickerList(symbolList.isSuccess, symbolList.data?.data);
 
   useEffect(() => {
     if (tickerList !== undefined && tickerList.isSuccess) {
@@ -117,7 +121,7 @@ const Home = () => {
         break;
       default:
         combinedData?.sort((a, b) => {
-          if (a.rank === null) return (sortDirection === 'desc') ? 1 : -1; // Why this desc, because the rank start from number 1
+          if (a.rank === null) return (sortDirection === 'desc') ? 1 : -1;
           if (b.rank === null) return (sortDirection === 'desc') ? -1 : 1;
           return (sortDirection === 'desc') ? a.rank - b.rank : b.rank - a.rank;
         });
@@ -172,18 +176,47 @@ const Home = () => {
   );
 
   const renderTokens = () => (
-    <ScrollView style={styles.coinContainer}>
-      <TokenList tokens={finalData} />
-    </ScrollView>
-  );
-
-  const renderTokenList = () => (
-    <FlatList
+    <FlashList
       data={finalData}
       renderItem={(item : { item:IToken }) => <Token key={item.item.name} data={item.item} />}
       keyExtractor={(item) => item.logo}
-      style={{ flexDirection: 'column' }}
+      estimatedItemSize={364}
     />
+  );
+
+  // const renderTokens = () => (
+  //   <FlatList
+  //     data={finalData}
+  //     renderItem={(item : { item:IToken }) => <Token key={item.item.name} data={item.item} />}
+  //     keyExtractor={(item) => item.logo}
+  //     style={{ flexDirection: 'column' }}
+  //   />
+  // );
+
+  // ScrollView is bad for rendering large list of data.
+  // const renderTokens = () => (
+  //   <ScrollView style={styles.coinContainer}>
+  //     <TokenList tokens={finalData} />
+  //   </ScrollView>
+  // );
+
+  const renderStatus = () => (
+    symbolList.isLoading
+      ? (
+        <View style={styles.loadingContainer}>
+          <Text style={styles.loadingText}>
+            Loading...
+          </Text>
+        </View>
+      )
+      : symbolList.isError
+    && (
+    <View style={styles.loadingContainer}>
+      <Text style={styles.loadingText}>
+        Error when fetching the API...
+      </Text>
+    </View>
+    )
   );
 
   return (
@@ -191,8 +224,8 @@ const Home = () => {
       {renderHeader()}
       {renderBadges()}
       {renderSort()}
-      {/* {renderTokens()} */}
-      {renderTokenList()}
+      {renderStatus()}
+      {renderTokens()}
     </SafeAreaView>
   );
 };

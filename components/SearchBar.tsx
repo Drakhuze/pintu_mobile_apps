@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -42,4 +42,4 @@ const SearchBar = ({ value, setSearchKey }: Props) => (
   </View>
 );
 
-export default SearchBar;
+export default memo(SearchBar);
